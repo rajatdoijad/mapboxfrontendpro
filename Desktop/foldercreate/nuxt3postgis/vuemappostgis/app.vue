@@ -159,11 +159,7 @@ async function onMapLoaded(map: mapboxgl.Map) {
       },
   };
   data.map.addLayer(layer);
-  // console.log(map);
-  // const marker = new mapboxgl.Marker({
-  //     draggable: true,
-  //     color: "#000000",
-  // });
+ 
   // marker.setLngLat([-122.4473, 37.7535]);
   // marker.addTo(map);
   // map.on("click", (e) => {
