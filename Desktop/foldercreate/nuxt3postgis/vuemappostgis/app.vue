@@ -19,9 +19,13 @@
       </select>
   </div>
   <main class="w-screen h-screen">
+    <label for="ipfile">Upload Your File</label>
+    <input id="ipfile" type="file">
       <v-map class="w-full h-full" :options="data.options" @loaded="onMapLoaded">
           <!-- <VLayerMapboxGeojson :sourceId="data.geoJsonSource.id" :source="data.geoJsonSource" layerId="myLayer"
                 :layer="data.geoJsonlayer" /> -->
+
+
       </v-map>
   </main>
 </template>
@@ -30,6 +34,9 @@ import mapboxgl from "mapbox-gl";
 import VMap from "v-mapbox";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+
 function upload() {
   console.log("hii");
 }
@@ -93,6 +100,8 @@ async function onMapLoaded(map: mapboxgl.Map) {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
   });
+
+  
   data.map.addControl(geocoder);
   // console.log('on map laoded: ', map);
   data.map.addSource("pune1", {
@@ -144,6 +153,9 @@ async function onMapLoaded(map: mapboxgl.Map) {
   //         "fill-opacity": 0.5,
   //     },
   // });
+
+
+ 
   const layer: mapboxgl.AnyLayer = {
       id: "pune",
       type: "line",
@@ -258,15 +270,21 @@ async function onMapLoaded(map: mapboxgl.Map) {
   //         }
   //     });
   // });
+var Draw = new MapboxDraw();
+map.addControl(Draw, 'top-left');
 }
 </script>
 <style>
-#layer-change {
+  #layer-change {
+  padding: 1px;
   position: fixed;
   top: 10px;
-  left: 10px;
+  left: 70px;
   z-index: 1;
+ 
+  margin-top: 5px;
 }
+
 #file {
   width: 185px;
   position: fixed;
