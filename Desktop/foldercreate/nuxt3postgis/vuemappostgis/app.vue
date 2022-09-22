@@ -37,6 +37,12 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
+
+
+let res: any = await $fetch("http://localhost:3001/map").catch((err) =>
+  alert(err)
+);
+
 function upload() {
   console.log("hii");
 }
@@ -45,7 +51,7 @@ const data = reactive({
       accessToken:
           "pk.eyJ1IjoibWF5dXJ3YWtpa2FyIiwiYSI6ImNsNmdjdGxwbjBiNGMzY282bWh0dng2c2kifQ.y-m4-zQKOeOOnDG5I1u6ng",
       style: "mapbox://styles/mapbox/outdoors-v11",
-      center: [-68.137343, 45.137451],
+      center: [73.8567,18.5204],
       zoom: 8,
       maxZoom: 22,
       crossSourceCollisions: false,
@@ -100,7 +106,6 @@ async function onMapLoaded(map: mapboxgl.Map) {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
   });
-
   
   data.map.addControl(geocoder);
   // console.log('on map laoded: ', map);
@@ -142,17 +147,23 @@ async function onMapLoaded(map: mapboxgl.Map) {
           },
       },
   });
+
+  
   // Add a new layer to visualize the polygon.
-  // data.map.addLayer({
-  //     id: "pune",
-  //     type: "fill",
-  //     source: "pune1", // reference the data source
-  //     layout: {},
-  //     paint: {
-  //         "fill-color": "red", //blue color fill
-  //         "fill-opacity": 0.5,
-  //     },
-  // });
+  data.map.addLayer({
+      id: "pune",
+      type: "fill",
+      source: "pune1", // reference the data source
+      layout: {},
+      paint: {
+          "fill-color": "red", //blue color fill
+          "fill-opacity": 0.5,
+      },
+  });
+
+ 
+
+
 
 
  
@@ -165,12 +176,32 @@ async function onMapLoaded(map: mapboxgl.Map) {
           'line-cap': "round"
       },
       paint: {
+        
           "line-color": "green", //blue color fill
           "line-width": 1,
-          "line-opacity": 1
+          "line-opacity": 1,
+         
       },
   };
   data.map.addLayer(layer);
+
+  res.forEach((element) => {
+    new mapboxgl.Marker({
+      color: getRandomColor(),
+      draggable:true
+    })
+      .setLngLat([element.map_lat, element.map_lon])
+      .addTo(map);
+  });
+
+  function getRandomColor() {
+    var letters = "0123456789ABCDEF";
+    var color = "#";
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
  
   // marker.setLngLat([-122.4473, 37.7535]);
   // marker.addTo(map);
@@ -273,6 +304,8 @@ async function onMapLoaded(map: mapboxgl.Map) {
 var Draw = new MapboxDraw();
 map.addControl(Draw, 'top-left');
 }
+
+
 </script>
 <style>
   #layer-change {
